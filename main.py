@@ -27,6 +27,29 @@ def SIGNAL(macd_series, index):
     return EMA(9, macd_series, index)
 
 
+def plot_macd_signal(x_val, macd_series, signal_series):
+    plt.plot(x_val, macd_series, color='b', label='MACD')
+    plt.plot(x_val, signal_series, color='r', label='SIGNAL')
+
+    plt.xlabel("Próbka")
+    plt.ylabel("Wartość")
+    plt.title("Metody Numeryczne - MACD i SIGNAL")
+
+    plt.legend()
+    plt.show()
+
+
+def plot_wig20(x_val, wig_samples):
+    plt.plot(x_val, wig_samples, color='g', label='WIG20')
+
+    plt.xlabel("Próbka")
+    plt.ylabel("Wartość")
+    plt.title("Metody Numeryczne - WIG20")
+
+    plt.legend()
+    plt.show()
+
+
 n = 1000
 
 df = pd.read_csv('wig20_d.csv')
@@ -44,14 +67,6 @@ for i in range(n):
     signal_series[i] = SIGNAL(macd_series, i)
 
 x_val = [i for i in range(n)]
-y_val = macd_series
 
-plt.plot(x_val, macd_series, color='b', label='MACD')
-plt.plot(x_val, signal_series, color='r', label='SIGNAL')
-
-plt.xlabel("Dzień")
-plt.ylabel("Wartość")
-plt.title("Metody Numeryczne - MACD i SIGNAL")
-
-plt.legend()
-plt.show()
+plot_macd_signal(x_val, macd_series, signal_series)
+plot_wig20(x_val, samples)
