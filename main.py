@@ -27,6 +27,13 @@ def SIGNAL(macd_series, index):
     return EMA(9, macd_series, index)
 
 
+def histogram(macd_series, signal_series, n):
+    histogram = []
+    for i in range(n):
+        histogram.append(macd_series[i] - signal_series[i])
+    return histogram
+
+
 def plot_macd_signal(x_val, macd_series, signal_series):
     plt.plot(x_val, macd_series, color='b', label='MACD')
     plt.plot(x_val, signal_series, color='r', label='SIGNAL')
@@ -50,6 +57,25 @@ def plot_wig20(x_val, wig_samples):
     plt.show()
 
 
+def plot_histogram(x_val, histogram):
+    plt.bar(x_val, histogram)
+
+    plt.xlabel("Próbka")
+    plt.ylabel("Histogram")
+    plt.title("Metody Numeryczne - histogram")
+    plt.show()
+
+
+def count_final_fund(starting_fund, epsilon, hist, samples):
+    for i in range(n - 1):
+        if -epsilon <= hist[i] <= epsilon:
+            if hist[i + 1] > epsilon:
+                starting_fund -= samples[i]
+            elif hist[i + 1] < -epsilon:
+                starting_fund += samples[i]
+    return starting_fund
+
+
 n = 1000
 
 df = pd.read_csv('wig20_d.csv')
@@ -70,3 +96,11 @@ x_val = [i for i in range(n)]
 
 plot_macd_signal(x_val, macd_series, signal_series)
 plot_wig20(x_val, samples)
+
+hist = histogram(macd_series, signal_series, n)
+plot_histogram(x_val, hist)
+
+epsilon = 2
+starting_found = 1000
+
+final_found = count_final_fund(starting_found, epsilon, hist, samples)
